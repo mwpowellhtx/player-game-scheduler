@@ -12,6 +12,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{43644C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameScheduler", "GameScheduler\GameScheduler.csproj", "{40C91E64-2E1A-4D9F-86E7-D410C720EE46}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "game-scheduler", "game-scheduler\game-scheduler.vcxproj", "{3F9AA74E-0DA9-46EC-8713-F97C552A30EC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,6 +34,16 @@ Global
 		{40C91E64-2E1A-4D9F-86E7-D410C720EE46}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{40C91E64-2E1A-4D9F-86E7-D410C720EE46}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{40C91E64-2E1A-4D9F-86E7-D410C720EE46}.Release|Win32.ActiveCfg = Release|Any CPU
+		{3F9AA74E-0DA9-46EC-8713-F97C552A30EC}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{3F9AA74E-0DA9-46EC-8713-F97C552A30EC}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{3F9AA74E-0DA9-46EC-8713-F97C552A30EC}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{3F9AA74E-0DA9-46EC-8713-F97C552A30EC}.Debug|Win32.ActiveCfg = Debug|Win32
+		{3F9AA74E-0DA9-46EC-8713-F97C552A30EC}.Debug|Win32.Build.0 = Debug|Win32
+		{3F9AA74E-0DA9-46EC-8713-F97C552A30EC}.Release|Any CPU.ActiveCfg = Release|Win32
+		{3F9AA74E-0DA9-46EC-8713-F97C552A30EC}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{3F9AA74E-0DA9-46EC-8713-F97C552A30EC}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{3F9AA74E-0DA9-46EC-8713-F97C552A30EC}.Release|Win32.ActiveCfg = Release|Win32
+		{3F9AA74E-0DA9-46EC-8713-F97C552A30EC}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

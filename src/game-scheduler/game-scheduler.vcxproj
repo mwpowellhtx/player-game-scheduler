@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{3F9AA74E-0DA9-46EC-8713-F97C552A30EC}</ProjectGuid>
+    <RootNamespace>sched</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>NotSet</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>NotSet</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="best_match_scheduler.cpp" />
+    <ClCompile Include="candidator.cpp" />
+    <ClCompile Include="data_context.cpp" />
+    <ClCompile Include="file_stream_streamer.cpp" />
+    <ClCompile Include="game.cpp" />
+    <ClCompile Include="player.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="regex_helpers.cpp" />
+    <ClCompile Include="scheduled.cpp" />
+    <ClCompile Include="scheduler.cpp" />
+    <ClCompile Include="std_out_streamer.cpp" />
+    <ClCompile Include="streamer_base.cpp" />
+    <ClCompile Include="unicode.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="algorithms.hpp" />
+    <ClInclude Include="best_match_scheduler.h" />
+    <ClInclude Include="candidator.h" />
+    <ClInclude Include="data_context.h" />
+    <ClInclude Include="file_stream_streamer.h" />
+    <ClInclude Include="game.h" />
+    <ClInclude Include="filter.hpp" />
+    <ClInclude Include="player.h" />
+    <ClInclude Include="regex_helpers.h" />
+    <ClInclude Include="scenario.hpp" />
+    <ClInclude Include="scheduled.h" />
+    <ClInclude Include="scheduler.h" />
+    <ClInclude Include="std_out_streamer.h" />
+    <ClInclude Include="streamer_base.h" />
+    <ClInclude Include="tokenize.hpp" />
+    <ClInclude Include="unicode.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="business-use-case.txt">
+      <DeploymentContent>true</DeploymentContent>
+    </Text>
+    <Text Include="test-use-case-1.txt">
+      <DeploymentContent>true</DeploymentContent>
+    </Text>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+  <ItemGroup>
+    <DataFilesToCopy Include="**\*.txt" />
+  </ItemGroup>
+  <Target Name="CopyDataFiles" AfterTargets="Build">
+    <Message Text="Copying $(ProjectDir)*.txt to $(OutDir) ..." />
+    <Copy SourceFiles="@(DataFilesToCopy)" DestinationFiles="@(DataFilesToCopy->'$(TargetDir)\%(Filename)%(Extension)')" ContinueOnError="true" />
+  </Target>
+</Project>
