@@ -28,7 +28,7 @@ namespace sched {
         return selected.size() > 0;
     }
 
-    bool best_match_scheduler::run(data_context const & dc) {
+    bool best_match_scheduler::run(data_context & dc) {
 
         using namespace cpplinq;
 
@@ -40,10 +40,10 @@ namespace sched {
 
         //Work through only unassigned games.
         auto pending_games = from(dc.games) >> where([](game* const & g) {
-            return g->players.size() == 0;
+            return g->assigned.size() == 0;
         }) >> to_vector();
 
-        std::greater<candidator> candidate_gt;
+        from(pending_games) >> for_each([](game* g) { g->prepare(); });
 
         //TODO: instead of loading players with game preferences: add players to games as candidates, and do the refining from there...
         //TODO: might also keep an 'assigned' vector during the process
@@ -56,8 +56,6 @@ namespace sched {
 
             auto candidates = from(unassigned_players)
                 >> select([&g](player* p) { return candidator(g, p); }) >> to_vector();
-
-            std::sort(candidates.begin(), candidates.end(), candidate_gt);
 
             from(candidates) >> take(team_size)
                 >> for_each([](candidator const & x) { x.g->add(x.p); });
@@ -74,7 +72,7 @@ namespace sched {
         }
 
         auto assigned_count = from(dc.games)
-            >> select([](game* g) { return g->players.size(); }) >> sum();
+            >> select([](game* g) { return g->assigned.size(); }) >> sum();
 
         assert(assigned_count == dc.players.size());
 

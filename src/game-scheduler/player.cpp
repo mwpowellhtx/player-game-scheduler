@@ -24,6 +24,12 @@ namespace sched
         assignment(nullptr) {
     }
 
+    player::~player() {
+        using namespace cpplinq;
+        from(preferences) >> for_each([](candidator* x) { if (x) delete x; });
+        preferences.clear();
+    }
+
     bool player::is_line_of(const std::string& line) {
         return line.length() && line[0] == 'P';
     }
@@ -38,25 +44,31 @@ namespace sched
         if (!line.length()) return result;
 
         auto init_result = [&result]() { result = new player; };
-        auto recv_name = [&result](std::string g) { result->name = g; };
-        auto recv_id = [&result](std::string g) { result->id = std::atol(g.c_str()); };
+        auto recv_name = [&result](std::string grp) { result->name = grp; };
+        auto recv_id = [&result](std::string grp) { result->id = std::atol(grp.c_str()); };
 
-        auto recv_aspect_h = [&result](std::string g) { result->set_aspect(AspectType::HandEyeCoordination, std::atol(g.c_str())); };
-        auto recv_aspect_e = [&result](std::string g) { result->set_aspect(AspectType::Endurance, std::atol(g.c_str())); };
-        auto recv_aspect_p = [&result](std::string g) { result->set_aspect(AspectType::Pizzazz, std::atol(g.c_str())); };
+        auto recv_aspect_h = [&result](std::string grp) { result->set_aspect(AspectType::HandEyeCoordination, std::atol(grp.c_str())); };
+        auto recv_aspect_e = [&result](std::string grp) { result->set_aspect(AspectType::Endurance, std::atol(grp.c_str())); };
+        auto recv_aspect_p = [&result](std::string grp) { result->set_aspect(AspectType::Pizzazz, std::atol(grp.c_str())); };
 
-        auto recv_prefs = [&dc, &result](std::string g) {
+        auto recv_prefs = [&dc, &result](std::string grp) {
 
             std::vector<std::string> tokenized;
-            trx::tokenize(g, tokenized, ",");
+            trx::tokenize(grp, tokenized, ",");
 
             auto filtered = from(tokenized)
                 >> select([](std::string const & n) { return atol(n.c_str() + 1); })
                 >> select([&dc](long id) { return dc->get_game_by_id(id); })
                 >> to_vector();
 
-            result->preferences.insert(result->preferences.end(),
-                filtered.begin(), filtered.end());
+            //Cross reference game preferences per player.
+            //Also cross reference available players per game.
+            from(filtered) >> for_each([&result](game* g) {
+                //TODO: build a candidator for both preferences and for available
+                auto* x = new candidator(g, result);
+                result->preferences.push_back(x);
+                g->available.push_back(x);
+            });
         };
 
         trx::match_and_parse(pattern, line, init_result,
@@ -70,6 +82,10 @@ namespace sched
         return true;
     }
 
+    bool player::is_assigned() const {
+        return assignment != nullptr;
+    }
+
     std::string player::format_preferences(data_context const & dc) const {
 
         using namespace cpplinq;
@@ -77,10 +93,9 @@ namespace sched
         //G2:128 G1:31 G0:188
 
         //Formats the game value aligned with the player.
-        auto formatter = [this](game* pg) {
+        auto formatter = [this](candidator* x) {
             std::stringstream ss;
-            auto value = (*pg) * (*this);
-            ss << pg->name << COLON << value;
+            ss << x->g->name << COLON << x->value;
             return ss.str();
         };
 

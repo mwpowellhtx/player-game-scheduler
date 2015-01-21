@@ -2,8 +2,10 @@
 #define SCHED_GAME_H
 
 #include "scheduled.h"
+#include "candidator.h"
 
 #include <set>
+#include <deque>
 #include <memory>
 #include <regex>
 #include <functional>
@@ -20,13 +22,27 @@ namespace sched
 
     public:
 
-        std::set<player*> players;
+        std::set<player*> assigned;
+
+        std::deque<candidator*> available;
 
         game();
 
         game(const char* n);
 
-        void add(player* pp);
+        void add(player* p);
+
+        void prepare();
+
+        void refresh();
+
+        std::vector<player*>::size_type true_available_size();
+
+        size_t get_remaining_choices(size_t max_size);
+
+        long next_value();
+
+        void evaluate();
 
         static bool is_line_of(std::string const & line);
 

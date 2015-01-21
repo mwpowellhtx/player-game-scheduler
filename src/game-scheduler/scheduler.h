@@ -7,13 +7,11 @@ namespace sched {
 
     struct scheduler_base {
 
+        virtual bool run(data_context & dc) = 0;
+
     protected:
 
         scheduler_base();
-
-    public:
-
-        virtual bool run(data_context const & dc) = 0;
     };
 }
 

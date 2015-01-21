@@ -67,6 +67,7 @@
     <ClCompile Include="best_match_scheduler.cpp" />
     <ClCompile Include="candidator.cpp" />
     <ClCompile Include="data_context.cpp" />
+    <ClCompile Include="evaluation_scheduler.cpp" />
     <ClCompile Include="file_stream_streamer.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="player.cpp" />
@@ -83,6 +84,7 @@
     <ClInclude Include="best_match_scheduler.h" />
     <ClInclude Include="candidator.h" />
     <ClInclude Include="data_context.h" />
+    <ClInclude Include="evaluation_scheduler.h" />
     <ClInclude Include="file_stream_streamer.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="filter.hpp" />

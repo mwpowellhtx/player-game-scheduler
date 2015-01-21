@@ -1,0 +1,44 @@
+﻿Left file: C:\Users\Michael\AppData\Local\Temp\TortoiseGit\cpp4F66.tmp\cpplinq-99800e6-left.hpp
+Right file: I:\Source\Spikes\player-game-scheduler-working\tools\cpplinq\cpplinq.hpp
+29a30
+> #include <deque>
+3298a3300,3332
+>         struct to_deque_builder : base_builder
+>         {
+>             typedef                 to_deque_builder       this_type;
+> 
+>             CPPLINQ_INLINEMETHOD explicit to_deque_builder() CPPLINQ_NOEXCEPT
+>             {
+>             }
+> 
+>             CPPLINQ_INLINEMETHOD to_deque_builder(to_deque_builder const & v) CPPLINQ_NOEXCEPT
+>             {
+>             }
+> 
+>             CPPLINQ_INLINEMETHOD to_deque_builder(to_deque_builder && v) CPPLINQ_NOEXCEPT
+>             {
+>             }
+> 
+>             template<typename TRange>
+>             CPPLINQ_METHOD std::deque<typename TRange::value_type> build(TRange range) const
+>             {
+>                 std::deque<typename TRange::value_type> result;
+> 
+>                 while (range.next())
+>                 {
+>                     result.push_back(range.front());
+>                 }
+> 
+>                 return result;
+>             }
+> 
+>         };
+> 
+>         // -------------------------------------------------------------------------
+> 
+5269a5304,5308
+>     }
+> 
+>     CPPLINQ_INLINEMETHOD detail::to_deque_builder to_deque() CPPLINQ_NOEXCEPT
+>     {
+>         return detail::to_deque_builder();

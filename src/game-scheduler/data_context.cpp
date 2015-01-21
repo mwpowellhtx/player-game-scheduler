@@ -108,7 +108,7 @@ namespace sched {
         //Now we can proceed with the players.
         auto players_parsed = parsing_players.get();
 
-        return games_parsed && players_parsed && any();
+        return games_parsed && players_parsed && is_satisfied();
     }
 
     bool data_context::try_get_team_size(size_t& size) const {
@@ -141,8 +141,36 @@ namespace sched {
         return pdc && (pdc->games.size() || pdc->players.size());
     }
 
-    bool data_context::any(const std::function<bool(data_context*)>& handler) {
+    bool data_context::is_satisfied(
+        const std::function<bool(data_context*)>& handler) {
         return handler(this);
+    }
+
+    bool data_context::evaluate() {
+
+        using namespace cpplinq;
+
+        size_t team_size = 0;
+
+        try_get_team_size(team_size);
+
+        from(games) >> for_each([](game* g) { g->evaluate(); });
+
+        //TODO: TBD: likely there is a tie-breaker scenario here...
+        auto eval_games = from(games)
+            >> orderby_ascending([&team_size](game* g) { return g->assigned.size() == team_size ? 1 : 0; })
+            >> thenby_ascending([&team_size](game* g) { return g->get_remaining_choices(team_size); })
+            >> thenby_ascending([](game* g) { return g->true_available_size(); })
+            >> thenby_descending([](game* g) { return g->next_value(); })
+            >> to_vector();
+
+        games.clear();
+
+        games.insert(games.end(), eval_games.begin(), eval_games.end());
+
+        return from(games) >> any([&team_size](game* g) {
+            return g->assigned.size() < team_size;
+        });
     }
 
     bool data_context::report(std::ostream& os) const {

@@ -54,6 +54,9 @@
     <ClCompile Include="candidator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="evaluation_scheduler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="scheduled.h">
@@ -102,6 +105,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="candidator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="evaluation_scheduler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

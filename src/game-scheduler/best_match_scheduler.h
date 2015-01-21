@@ -9,7 +9,7 @@ namespace sched {
 
         best_match_scheduler();
 
-        virtual bool run(data_context const & dc);
+        virtual bool run(data_context & dc);
     };
 }
 

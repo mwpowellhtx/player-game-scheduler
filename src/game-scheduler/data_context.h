@@ -45,7 +45,11 @@ namespace sched {
 
         game* get_game_by_name(const std::string& name) const;
 
-        bool any(const std::function<bool(data_context*)>& handler = default_any_handler);
+        bool is_satisfied(
+            const std::function<bool(data_context*)>& handler
+            = default_any_handler);
+
+        bool evaluate();
 
         bool report(std::ostream& os) const;
     };
