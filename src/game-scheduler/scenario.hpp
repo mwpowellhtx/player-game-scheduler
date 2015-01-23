@@ -26,6 +26,8 @@ namespace sched
 
             if (!dc.load()) return false;
 
+            //TODO: could put some hooks in for event processing, monitor number of solutions, timeout, and so forth
+            //TODO: potentially go boost-enabled, for instance; using signals, the date/time, etc
             Scheduler sched;
 
             if (!sched.run(dc)) return false;

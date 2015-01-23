@@ -2,7 +2,6 @@
 #define SCHED_GAME_H
 
 #include "scheduled.h"
-#include "candidator.h"
 
 #include <set>
 #include <deque>
@@ -13,7 +12,7 @@
 namespace sched
 {
     struct player;
-    struct data_context;
+    struct candidate;
 
     struct game : public scheduled {
     private:
@@ -22,31 +21,25 @@ namespace sched
 
     public:
 
-        std::set<player*> assigned;
+        double value;
 
-        std::deque<candidator*> available;
+        size_t remaining_size;
 
-        game();
+        std::set<candidate*> assigned;
 
-        game(const char* n);
+        std::vector<candidate*> available;
 
-        void add(player* p);
+        game(data_context* pdc, const char* n = "");
 
-        void prepare();
+        virtual ~game();
+
+        bool has_candidate(candidate* x) const;
 
         void refresh();
 
-        std::vector<player*>::size_type true_available_size();
-
-        size_t get_remaining_choices(size_t max_size);
-
-        long next_value();
-
-        void evaluate();
-
         static bool is_line_of(std::string const & line);
 
-        static game* try_parse(std::string const & line);
+        static game* try_parse(data_context* pdc, std::string const & line);
 
         virtual bool is_game() const;
 
@@ -58,7 +51,7 @@ namespace sched
 
     public:
 
-        std::string format_report(data_context const & dc) const;
+        std::string format_report() const;
     };
 }
 

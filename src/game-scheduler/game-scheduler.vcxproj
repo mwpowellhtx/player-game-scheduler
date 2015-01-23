@@ -65,16 +65,20 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="best_match_scheduler.cpp" />
-    <ClCompile Include="candidator.cpp" />
+    <ClCompile Include="candidate.cpp" />
+    <ClCompile Include="candidate_analysis.cpp" />
+    <ClCompile Include="candidate_scheduler.cpp" />
     <ClCompile Include="data_context.cpp" />
     <ClCompile Include="evaluation_scheduler.cpp" />
     <ClCompile Include="file_stream_streamer.cpp" />
     <ClCompile Include="game.cpp" />
+    <ClCompile Include="mapping_scheduler.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="regex_helpers.cpp" />
     <ClCompile Include="scheduled.cpp" />
     <ClCompile Include="scheduler.cpp" />
+    <ClCompile Include="statistics.cpp" />
     <ClCompile Include="std_out_streamer.cpp" />
     <ClCompile Include="streamer_base.cpp" />
     <ClCompile Include="unicode.cpp" />
@@ -82,21 +86,29 @@
   <ItemGroup>
     <ClInclude Include="algorithms.hpp" />
     <ClInclude Include="best_match_scheduler.h" />
-    <ClInclude Include="candidator.h" />
+    <ClInclude Include="candidate.h" />
+    <ClInclude Include="candidate_analysis.h" />
+    <ClInclude Include="candidate_map_helpers.h" />
+    <ClInclude Include="candidate_scheduler.h" />
     <ClInclude Include="data_context.h" />
     <ClInclude Include="evaluation_scheduler.h" />
     <ClInclude Include="file_stream_streamer.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="filter.hpp" />
+    <ClInclude Include="mapping_scheduler.h" />
+    <ClInclude Include="map_helpers.hpp" />
     <ClInclude Include="player.h" />
     <ClInclude Include="regex_helpers.h" />
     <ClInclude Include="scenario.hpp" />
     <ClInclude Include="scheduled.h" />
     <ClInclude Include="scheduler.h" />
+    <ClInclude Include="sparse_matrix.hpp" />
+    <ClInclude Include="statistics.h" />
     <ClInclude Include="std_out_streamer.h" />
     <ClInclude Include="streamer_base.h" />
     <ClInclude Include="tokenize.hpp" />
     <ClInclude Include="unicode.h" />
+    <ClInclude Include="vector_helpers.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="business-use-case.txt">

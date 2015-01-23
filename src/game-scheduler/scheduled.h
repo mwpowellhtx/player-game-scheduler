@@ -21,6 +21,8 @@ namespace sched
 
     typedef std::map<AspectType, long> AspectMap;
 
+    struct data_context;
+
     struct scheduled {
 
         long id;
@@ -31,9 +33,9 @@ namespace sched
 
     protected:
 
-        scheduled();
+        data_context* pdc;
 
-        scheduled(const char* n);
+        scheduled(data_context* pdc, const char* n = "");
 
     public:
 
@@ -42,6 +44,10 @@ namespace sched
         virtual bool is_game() const;
 
         virtual bool is_player() const;
+
+    private:
+
+        void init();
     };
 }
 

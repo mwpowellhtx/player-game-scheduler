@@ -13,11 +13,15 @@ namespace sched {
 
     struct data_context {
 
+        size_t team_size;
+
         std::string name;
 
         std::vector<game*> games;
 
         std::vector<player*> players;
+
+        std::vector<candidate*> candidates;
 
         data_context(const char* n);
 
@@ -29,9 +33,9 @@ namespace sched {
 
         void reset();
 
-        bool load(const std::string& path, std::vector<std::string>& lines);
+        bool load(std::string const & path, std::vector<std::string> & lines);
 
-        bool parse_lines(const std::vector<std::string>& lines);
+        bool parse_lines(std::vector<std::string> const & lines);
 
     private:
 
@@ -39,17 +43,13 @@ namespace sched {
 
     public:
 
-        bool try_get_team_size(size_t& size) const;
-
         game* data_context::get_game_by_id(long id) const;
 
-        game* get_game_by_name(const std::string& name) const;
+        game* get_game_by_name(std::string const & name) const;
 
         bool is_satisfied(
             const std::function<bool(data_context*)>& handler
             = default_any_handler);
-
-        bool evaluate();
 
         bool report(std::ostream& os) const;
     };

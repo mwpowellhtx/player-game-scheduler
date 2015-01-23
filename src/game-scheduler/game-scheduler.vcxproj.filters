@@ -51,10 +51,22 @@
     <ClCompile Include="file_stream_streamer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="candidator.cpp">
+    <ClCompile Include="evaluation_scheduler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="evaluation_scheduler.cpp">
+    <ClCompile Include="candidate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="candidate_scheduler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mapping_scheduler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="candidate_analysis.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="statistics.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -73,9 +85,6 @@
     </ClInclude>
     <ClInclude Include="regex_helpers.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="algorithms.hpp">
-      <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="game.h">
       <Filter>Header Files</Filter>
@@ -104,10 +113,37 @@
     <ClInclude Include="streamer_base.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="candidator.h">
+    <ClInclude Include="evaluation_scheduler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="evaluation_scheduler.h">
+    <ClInclude Include="candidate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="candidate_scheduler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vector_helpers.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="map_helpers.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mapping_scheduler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="candidate_map_helpers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sparse_matrix.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="candidate_analysis.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="algorithms.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="statistics.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

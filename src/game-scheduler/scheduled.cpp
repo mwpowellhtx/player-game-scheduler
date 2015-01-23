@@ -4,24 +4,19 @@
 
 namespace sched
 {
-    scheduled::scheduled()
-        : id(0L),
-        name(),
-        aspects({
-            { AspectType::HandEyeCoordination, 0L },
-            { AspectType::Endurance, 0L },
-            { AspectType::Pizzazz, 0L }
-    }) {
-    }
-
-    scheduled::scheduled(const char* n)
+    scheduled::scheduled(data_context* pdc, const char* n)
         : id(0L),
         name(n),
-        aspects({
-            { AspectType::HandEyeCoordination, 0L },
-            { AspectType::Endurance, 0L },
-            { AspectType::Pizzazz, 0L }
-    }) {
+        aspects(),
+        pdc(pdc) {
+
+        init();
+    }
+
+    void scheduled::init() {
+        set_aspect(AspectType::HandEyeCoordination, 0L);
+        set_aspect(AspectType::Endurance, 0L);
+        set_aspect(AspectType::Pizzazz, 0L);
     }
 
     void scheduled::set_aspect(AspectType key, long value) {

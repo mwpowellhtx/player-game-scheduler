@@ -13,11 +13,14 @@
 namespace sched {
 
     data_context::data_context(const char* n)
-        : name(n), games(), players() {
+        : team_size(0),
+        name(n),
+        games(),
+        players(),
+        candidates() {
     }
 
     data_context::~data_context() {
-
         reset();
     }
 
@@ -30,6 +33,9 @@ namespace sched {
 
         games.clear();
         players.clear();
+
+        //Does not own the candidates themselves.
+        candidates.clear();
     }
 
     bool data_context::load() {
@@ -40,11 +46,16 @@ namespace sched {
 
         if (!load(path, lines)) return false;
 
-        return parse_lines(lines);
+        auto parsed = parse_lines(lines);
+
+        if (parsed)
+            team_size = players.size() / games.size();
+
+        return parsed;
     }
 
-    bool data_context::load(const std::string& path,
-        std::vector<std::string>& lines) {
+    bool data_context::load(std::string const & path,
+        std::vector<std::string> & lines) {
 
         lines.clear();
 
@@ -65,56 +76,45 @@ namespace sched {
         return lines.size() > 0;
     }
 
-    bool games_parser(std::vector<game*>* games, std::vector<std::string>* lines) {
-
-        std::for_each(lines->begin(), lines->end(),
-            [&games](std::string & l) {
-
-            auto fg = std::async(game::try_parse, l);
-            games->push_back(fg.get());
-        });
-
-        return true;
-    }
-
-    bool players_parser(data_context* pdc, std::vector<player*>* players,
-        std::vector<std::string>* lines) {
-
-        std::for_each(lines->begin(), lines->end(),
-            [&pdc, &players](std::string & l) {
-
-            auto fp = std::async(player::try_parse, l, pdc);
-            players->push_back(fp.get());
-        });
-
-        return true;
-    }
-
-    bool data_context::parse_lines(const std::vector<std::string>& lines) {
+    bool data_context::parse_lines(std::vector<std::string> const & lines) {
 
         using namespace cpplinq;
 
+        auto games_parser = [](data_context* pdc, std::vector<std::string> const & lines) {
+            std::for_each(lines.begin(), lines.end(), [&pdc](std::string const & l) {
+                auto fg = std::async(game::try_parse, pdc, l);
+                pdc->games.push_back(fg.get());
+            });
+            return true;
+        };
+
+        auto players_parser = [](data_context* pdc, std::vector<std::string> const & lines) {
+            std::for_each(lines.begin(), lines.end(), [&pdc](std::string const & l) {
+                auto fp = std::async(player::try_parse, pdc, l);
+                pdc->players.push_back(fp.get());
+            });
+            return true;
+        };
+
         //Make a serious effort to do as much of this in parallel as possible.
         auto game_lines = from(lines) >> where(game::is_line_of) >> to_vector();
-        auto parsing_games = std::async(games_parser, &games, &game_lines);
+        auto parsing_games = std::async(games_parser, this, game_lines);
 
         //Must await games to be parsed prior to players.
         auto games_parsed = parsing_games.get();
 
         //Scales being what they are squeeze as much performance out of this as possible...
         auto player_lines = from(lines) >> where(player::is_line_of) >> to_vector();
-        auto parsing_players = std::async(players_parser, this, &players, &player_lines);
+        auto parsing_players = std::async(players_parser, this, player_lines);
 
         //Now we can proceed with the players.
         auto players_parsed = parsing_players.get();
 
-        return games_parsed && players_parsed && is_satisfied();
-    }
+        candidates = from(players)
+            >> select_many([](player* p) { return from(p->preferences); })
+            >> to_vector();
 
-    bool data_context::try_get_team_size(size_t& size) const {
-        if (!games.size()) return false;
-        size = players.size() / games.size();
-        return size > 0;
+        return games_parsed && players_parsed && is_satisfied();
     }
 
     game* data_context::get_game_by_id(long id) const {
@@ -146,40 +146,13 @@ namespace sched {
         return handler(this);
     }
 
-    bool data_context::evaluate() {
-
-        using namespace cpplinq;
-
-        size_t team_size = 0;
-
-        try_get_team_size(team_size);
-
-        from(games) >> for_each([](game* g) { g->evaluate(); });
-
-        //TODO: TBD: likely there is a tie-breaker scenario here...
-        auto eval_games = from(games)
-            >> orderby_ascending([&team_size](game* g) { return g->assigned.size() == team_size ? 1 : 0; })
-            >> thenby_ascending([&team_size](game* g) { return g->get_remaining_choices(team_size); })
-            >> thenby_ascending([](game* g) { return g->true_available_size(); })
-            >> thenby_descending([](game* g) { return g->next_value(); })
-            >> to_vector();
-
-        games.clear();
-
-        games.insert(games.end(), eval_games.begin(), eval_games.end());
-
-        return from(games) >> any([&team_size](game* g) {
-            return g->assigned.size() < team_size;
-        });
-    }
-
     bool data_context::report(std::ostream& os) const {
 
         using namespace cpplinq;
 
         if (os) {
-            from(games) >> reverse() >> for_each([this, &os](game* g) {
-                os << g->format_report((*this)) << std::endl;
+            from(games) >> reverse() >> for_each([&os](game* g) {
+                os << g->format_report() << std::endl;
             });
         }
 
